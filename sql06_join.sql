@@ -20,6 +20,10 @@ join 종류:
 */
 
 -- 사번, 이름, 부서번호, 부서이름을 검색 - inner join
-SELECT empno, ename, deptno, dname
-    FROM emp
-        join
+SELECT e.empno, e.ename, e.deptno, d.dname
+    FROM emp e
+        inner join dept d on e.deptno = d.deptno;
+        
+SELECT e.empno, e.ename, e.deptno, d.dname
+    FROM emp e, dept d
+    WHERE e.deptno = d.deptno;
