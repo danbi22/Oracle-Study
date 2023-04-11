@@ -101,13 +101,48 @@ select * from ex_user;
 -- 제약 조건: (1) primary key(고유키). (2) not null. (3) unique (4) check (5) foreign key(외부키)
 create table ex1 (
     col1 number(2) 
-          primary key, 
+          primary key, -- null이 아니고, 중복되지 않은 유일한 값--> 유일한 행 1개를 검색 가능
     col2 varchar2(100) 
-          not null,
+          not null, -- 반드시 값이 insert되어야 한다.
     col3 varchar2(100) 
-          unique,
+          unique, -- 중복되지 않은 유일한 값만 허용
     col4 number(2) 
-          check (col4 >= 4),
+          check (col4 >= 4), -- 조건을 만족하는 값만 insert를 허용한다.
     col5 number(2)
 );
 commit;
+
+
+insert into ex1
+values (1, 'hi', 'good', 10, 1); 
+
+insert into ex1
+values (1, 'heol', 'sdf', 10, 1);
+--> PK 위배: 중복되는 값이어서
+
+insert into ex1 (col2)
+values ('홍길동');
+--> PK 제약 조건 위배: primary key는 null이 되면 안됨.
+
+insert into ex1 (col1, col2)
+values (2, '김길동');
+
+insert into ex1 (col1)
+values (3);
+--> col2가 NN이라는 제약조건을 위배
+
+insert into ex1 (col1, col2, col3)
+values (3, '홍길동', 'good');
+--> col3은 중복된 값을 허용하지 않는다(unique)는 제약조건에 위배
+
+insert into ex1 (col1, col2, col4)
+values (3, '홍길동', -1);
+--> col4 >= 0 제약조건에 위배.
+
+
+select * from ex1;
+
+
+
+
+
